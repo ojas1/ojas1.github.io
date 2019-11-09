@@ -4458,6 +4458,371 @@ var author$project$T3store$incrementLocator = function (store) {
 		store,
 		{i: i + 1}) : store;
 };
+var elm$core$Basics$gt = _Utils_gt;
+var elm$core$Debug$todo = _Debug_todo;
+var elm$core$Maybe$Just = function (a) {
+	return {$: 'Just', a: a};
+};
+var elm$core$Maybe$Nothing = {$: 'Nothing'};
+var elm$core$Maybe$map2 = F3(
+	function (func, ma, mb) {
+		if (ma.$ === 'Nothing') {
+			return elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 'Nothing') {
+				return elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				return elm$core$Maybe$Just(
+					A2(func, a, b));
+			}
+		}
+	});
+var elm$core$Basics$apL = F2(
+	function (f, x) {
+		return f(x);
+	});
+var elm$core$Basics$le = _Utils_le;
+var elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
+var elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(x);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var elm_community$list_extra$List$Extra$getAt = F2(
+	function (idx, xs) {
+		return (idx < 0) ? elm$core$Maybe$Nothing : elm$core$List$head(
+			A2(elm$core$List$drop, idx, xs));
+	});
+var author$project$T3store$isRedex = F2(
+	function (arr, i) {
+		var mb = A2(elm_community$list_extra$List$Extra$getAt, i + 1, arr);
+		var ma = A2(elm_community$list_extra$List$Extra$getAt, i, arr);
+		var _n0 = A3(
+			elm$core$Maybe$map2,
+			F2(
+				function (a, b) {
+					return _Utils_cmp(a, b) > 0;
+				}),
+			ma,
+			mb);
+		if (_n0.$ === 'Just') {
+			var b = _n0.a;
+			return b;
+		} else {
+			return _Debug_todo(
+				'T3store',
+				{
+					start: {line: 44, column: 24},
+					end: {line: 44, column: 34}
+				})('bad...very bad');
+		}
+	});
+var elm$core$Basics$eq = _Utils_equal;
+var elm$core$Basics$or = _Basics_or;
+var elm$core$List$reverse = function (list) {
+	return A3(elm$core$List$foldl, elm$core$List$cons, _List_Nil, list);
+};
+var elm$core$List$foldrHelper = F4(
+	function (fn, acc, ctr, ls) {
+		if (!ls.b) {
+			return acc;
+		} else {
+			var a = ls.a;
+			var r1 = ls.b;
+			if (!r1.b) {
+				return A2(fn, a, acc);
+			} else {
+				var b = r1.a;
+				var r2 = r1.b;
+				if (!r2.b) {
+					return A2(
+						fn,
+						a,
+						A2(fn, b, acc));
+				} else {
+					var c = r2.a;
+					var r3 = r2.b;
+					if (!r3.b) {
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(fn, c, acc)));
+					} else {
+						var d = r3.a;
+						var r4 = r3.b;
+						var res = (ctr > 500) ? A3(
+							elm$core$List$foldl,
+							fn,
+							acc,
+							elm$core$List$reverse(r4)) : A4(elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(
+									fn,
+									c,
+									A2(fn, d, res))));
+					}
+				}
+			}
+		}
+	});
+var elm$core$List$foldr = F3(
+	function (fn, acc, ls) {
+		return A4(elm$core$List$foldrHelper, fn, acc, 0, ls);
+	});
+var elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3(elm$core$List$foldr, elm$core$List$cons, ys, xs);
+		}
+	});
+var elm$core$List$concat = function (lists) {
+	return A3(elm$core$List$foldr, elm$core$List$append, _List_Nil, lists);
+};
+var elm$core$List$takeReverse = F3(
+	function (n, list, kept) {
+		takeReverse:
+		while (true) {
+			if (n <= 0) {
+				return kept;
+			} else {
+				if (!list.b) {
+					return kept;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs,
+						$temp$kept = A2(elm$core$List$cons, x, kept);
+					n = $temp$n;
+					list = $temp$list;
+					kept = $temp$kept;
+					continue takeReverse;
+				}
+			}
+		}
+	});
+var elm$core$List$takeTailRec = F2(
+	function (n, list) {
+		return elm$core$List$reverse(
+			A3(elm$core$List$takeReverse, n, list, _List_Nil));
+	});
+var elm$core$List$takeFast = F3(
+	function (ctr, n, list) {
+		if (n <= 0) {
+			return _List_Nil;
+		} else {
+			var _n0 = _Utils_Tuple2(n, list);
+			_n0$1:
+			while (true) {
+				_n0$5:
+				while (true) {
+					if (!_n0.b.b) {
+						return list;
+					} else {
+						if (_n0.b.b.b) {
+							switch (_n0.a) {
+								case 1:
+									break _n0$1;
+								case 2:
+									var _n2 = _n0.b;
+									var x = _n2.a;
+									var _n3 = _n2.b;
+									var y = _n3.a;
+									return _List_fromArray(
+										[x, y]);
+								case 3:
+									if (_n0.b.b.b.b) {
+										var _n4 = _n0.b;
+										var x = _n4.a;
+										var _n5 = _n4.b;
+										var y = _n5.a;
+										var _n6 = _n5.b;
+										var z = _n6.a;
+										return _List_fromArray(
+											[x, y, z]);
+									} else {
+										break _n0$5;
+									}
+								default:
+									if (_n0.b.b.b.b && _n0.b.b.b.b.b) {
+										var _n7 = _n0.b;
+										var x = _n7.a;
+										var _n8 = _n7.b;
+										var y = _n8.a;
+										var _n9 = _n8.b;
+										var z = _n9.a;
+										var _n10 = _n9.b;
+										var w = _n10.a;
+										var tl = _n10.b;
+										return (ctr > 1000) ? A2(
+											elm$core$List$cons,
+											x,
+											A2(
+												elm$core$List$cons,
+												y,
+												A2(
+													elm$core$List$cons,
+													z,
+													A2(
+														elm$core$List$cons,
+														w,
+														A2(elm$core$List$takeTailRec, n - 4, tl))))) : A2(
+											elm$core$List$cons,
+											x,
+											A2(
+												elm$core$List$cons,
+												y,
+												A2(
+													elm$core$List$cons,
+													z,
+													A2(
+														elm$core$List$cons,
+														w,
+														A3(elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
+									} else {
+										break _n0$5;
+									}
+							}
+						} else {
+							if (_n0.a === 1) {
+								break _n0$1;
+							} else {
+								break _n0$5;
+							}
+						}
+					}
+				}
+				return list;
+			}
+			var _n1 = _n0.b;
+			var x = _n1.a;
+			return _List_fromArray(
+				[x]);
+		}
+	});
+var elm$core$List$take = F2(
+	function (n, list) {
+		return A3(elm$core$List$takeFast, 0, n, list);
+	});
+var elm_community$list_extra$List$Extra$splitAt = F2(
+	function (n, xs) {
+		return _Utils_Tuple2(
+			A2(elm$core$List$take, n, xs),
+			A2(elm$core$List$drop, n, xs));
+	});
+var elm_community$list_extra$List$Extra$uncons = function (list) {
+	if (!list.b) {
+		return elm$core$Maybe$Nothing;
+	} else {
+		var first = list.a;
+		var rest = list.b;
+		return elm$core$Maybe$Just(
+			_Utils_Tuple2(first, rest));
+	}
+};
+var elm_community$list_extra$List$Extra$swapAt = F3(
+	function (index1, index2, l) {
+		swapAt:
+		while (true) {
+			if (_Utils_eq(index1, index2) || (index1 < 0)) {
+				return l;
+			} else {
+				if (_Utils_cmp(index1, index2) > 0) {
+					var $temp$index1 = index2,
+						$temp$index2 = index1,
+						$temp$l = l;
+					index1 = $temp$index1;
+					index2 = $temp$index2;
+					l = $temp$l;
+					continue swapAt;
+				} else {
+					var _n0 = A2(elm_community$list_extra$List$Extra$splitAt, index1, l);
+					var part1 = _n0.a;
+					var tail1 = _n0.b;
+					var _n1 = A2(elm_community$list_extra$List$Extra$splitAt, index2 - index1, tail1);
+					var head2 = _n1.a;
+					var tail2 = _n1.b;
+					var _n2 = _Utils_Tuple2(
+						elm_community$list_extra$List$Extra$uncons(head2),
+						elm_community$list_extra$List$Extra$uncons(tail2));
+					if ((_n2.a.$ === 'Just') && (_n2.b.$ === 'Just')) {
+						var _n3 = _n2.a.a;
+						var value1 = _n3.a;
+						var part2 = _n3.b;
+						var _n4 = _n2.b.a;
+						var value2 = _n4.a;
+						var part3 = _n4.b;
+						return elm$core$List$concat(
+							_List_fromArray(
+								[
+									part1,
+									A2(elm$core$List$cons, value2, part2),
+									A2(elm$core$List$cons, value1, part3)
+								]));
+					} else {
+						return l;
+					}
+				}
+			}
+		}
+	});
+var author$project$T3store$swapAction = function (store) {
+	var _n0 = store;
+	var array = _n0.array;
+	var i = _n0.i;
+	return _Utils_update(
+		store,
+		{
+			array: A3(elm_community$list_extra$List$Extra$swapAt, i, i + 1, array),
+			i: i + 1
+		});
+};
+var author$project$T3store$swapIfRedexOrIncrement = function (store) {
+	var _n0 = store;
+	var array = _n0.array;
+	var i = _n0.i;
+	return A2(author$project$T3store$isRedex, array, i) ? author$project$T3store$swapAction(store) : author$project$T3store$incrementLocator(store);
+};
+var elm$core$Basics$apR = F2(
+	function (x, f) {
+		return f(x);
+	});
 var author$project$ModelB4$nextAction = function (model) {
 	var _n0 = model;
 	var mode = _n0.mode;
@@ -4468,7 +4833,7 @@ var author$project$ModelB4$nextAction = function (model) {
 		model,
 		{
 			mode: author$project$ModelB4$During,
-			store: author$project$T3store$incrementLocator(store)
+			store: author$project$T3store$swapIfRedexOrIncrement(store)
 		});
 };
 var author$project$ModelB4$resetAction = function (model) {
@@ -4511,20 +4876,11 @@ var author$project$ModelB4$update = F2(
 				return author$project$ModelB4$resetAction(model);
 		}
 	});
-var elm$core$Maybe$Just = function (a) {
-	return {$: 'Just', a: a};
-};
-var elm$core$Maybe$Nothing = {$: 'Nothing'};
 var elm$core$String$fromInt = _String_fromNumber;
 var author$project$ModelB4$msgPrefix = function (i) {
 	return 'action# ' + (elm$core$String$fromInt(i) + ':');
 };
 var author$project$T3Console$Failure = {$: 'Failure'};
-var elm$core$Basics$apL = F2(
-	function (f, x) {
-		return f(x);
-	});
-var elm$core$Basics$eq = _Utils_equal;
 var elm$core$Basics$identity = function (x) {
 	return x;
 };
@@ -4560,9 +4916,6 @@ var elm$core$Array$SubTree = function (a) {
 	return {$: 'SubTree', a: a};
 };
 var elm$core$Elm$JsArray$initializeFromList = _JsArray_initializeFromList;
-var elm$core$List$reverse = function (list) {
-	return A3(elm$core$List$foldl, elm$core$List$cons, _List_Nil, list);
-};
 var elm$core$Array$compressNodes = F2(
 	function (nodes, acc) {
 		compressNodes:
@@ -4585,10 +4938,6 @@ var elm$core$Array$compressNodes = F2(
 			}
 		}
 	});
-var elm$core$Basics$apR = F2(
-	function (x, f) {
-		return f(x);
-	});
 var elm$core$Tuple$first = function (_n0) {
 	var x = _n0.a;
 	return x;
@@ -4610,7 +4959,6 @@ var elm$core$Array$treeFromBuilder = F2(
 		}
 	});
 var elm$core$Basics$floor = _Basics_floor;
-var elm$core$Basics$gt = _Utils_gt;
 var elm$core$Basics$max = F2(
 	function (x, y) {
 		return (_Utils_cmp(x, y) > 0) ? x : y;
@@ -4668,7 +5016,6 @@ var elm$core$Array$initializeHelp = F5(
 			}
 		}
 	});
-var elm$core$Basics$le = _Utils_le;
 var elm$core$Basics$remainderBy = _Basics_remainderBy;
 var elm$core$Array$initialize = F2(
 	function (len, fn) {
@@ -4703,7 +5050,6 @@ var elm$json$Json$Decode$OneOf = function (a) {
 	return {$: 'OneOf', a: a};
 };
 var elm$core$Basics$and = _Basics_and;
-var elm$core$Basics$or = _Basics_or;
 var elm$core$Char$toCode = _Char_toCode;
 var elm$core$Char$isLower = function (_char) {
 	var code = elm$core$Char$toCode(_char);
@@ -5271,61 +5617,6 @@ var elm$core$Task$Perform = function (a) {
 };
 var elm$core$Task$succeed = _Scheduler_succeed;
 var elm$core$Task$init = elm$core$Task$succeed(_Utils_Tuple0);
-var elm$core$List$foldrHelper = F4(
-	function (fn, acc, ctr, ls) {
-		if (!ls.b) {
-			return acc;
-		} else {
-			var a = ls.a;
-			var r1 = ls.b;
-			if (!r1.b) {
-				return A2(fn, a, acc);
-			} else {
-				var b = r1.a;
-				var r2 = r1.b;
-				if (!r2.b) {
-					return A2(
-						fn,
-						a,
-						A2(fn, b, acc));
-				} else {
-					var c = r2.a;
-					var r3 = r2.b;
-					if (!r3.b) {
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(fn, c, acc)));
-					} else {
-						var d = r3.a;
-						var r4 = r3.b;
-						var res = (ctr > 500) ? A3(
-							elm$core$List$foldl,
-							fn,
-							acc,
-							elm$core$List$reverse(r4)) : A4(elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(
-									fn,
-									c,
-									A2(fn, d, res))));
-					}
-				}
-			}
-		}
-	});
-var elm$core$List$foldr = F3(
-	function (fn, acc, ls) {
-		return A4(elm$core$List$foldrHelper, fn, acc, 0, ls);
-	});
 var elm$core$List$map = F2(
 	function (f, xs) {
 		return A3(

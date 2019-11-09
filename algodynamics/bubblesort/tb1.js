@@ -5814,7 +5814,6 @@ var author$project$ModelB1$viewArray = function (model) {
 		aszip);
 };
 var author$project$ModelB1$CheckRedex = {$: 'CheckRedex'};
-var author$project$ModelB1$CheckSorted = {$: 'CheckSorted'};
 var author$project$ModelB1$SwapMsg = {$: 'SwapMsg'};
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
@@ -5831,37 +5830,9 @@ var author$project$ModelB1$viewButtons = function (model) {
 	var _n0 = model.mode;
 	switch (_n0.$) {
 		case 'Start':
-			return _List_fromArray(
-				[
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB1$CheckSorted)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('sorted?')
-						]))
-				]);
+			return _List_Nil;
 		case 'Lo':
-			return _List_fromArray(
-				[
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB1$CheckSorted)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('sorted?')
-						]))
-				]);
+			return _List_Nil;
 		case 'LoHi':
 			return _List_fromArray(
 				[
@@ -5876,18 +5847,6 @@ var author$project$ModelB1$viewButtons = function (model) {
 					_List_fromArray(
 						[
 							elm$html$Html$text('redex?')
-						])),
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB1$CheckSorted)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('sorted?')
 						]))
 				]);
 		default:
@@ -5904,18 +5863,6 @@ var author$project$ModelB1$viewButtons = function (model) {
 					_List_fromArray(
 						[
 							elm$html$Html$text('swap')
-						])),
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB1$CheckSorted)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('sorted?')
 						]))
 				]);
 	}

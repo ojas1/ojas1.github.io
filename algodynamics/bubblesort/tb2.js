@@ -4444,6 +4444,7 @@ var author$project$InputInterface$enableCheckRedex = function (inp) {
 		inp,
 		{checkRedex: author$project$InputInterface$Enabled});
 };
+var author$project$ModelB2$CheckRedex = {$: 'CheckRedex'};
 var author$project$ModelB2$LoHi = {$: 'LoHi'};
 var author$project$ModelB2$Success = {$: 'Success'};
 var author$project$ModelB2$Failure = {$: 'Failure'};
@@ -4865,54 +4866,6 @@ var author$project$ModelB2$selectI = F2(
 				select: A3(elm_community$list_extra$List$Extra$setAt, i, author$project$InputInterface$Disabled, select)
 			});
 	});
-var elm$core$String$fromInt = _String_fromNumber;
-var author$project$ModelB2$updateLo = F2(
-	function (msg, m) {
-		var _n0 = m;
-		var mode = _n0.mode;
-		var store = _n0.store;
-		var inp = _n0.inp;
-		var console = _n0.console;
-		switch (msg.$) {
-			case 'Select':
-				var i = msg.a;
-				return _Utils_update(
-					m,
-					{
-						console: A2(
-							author$project$ModelB2$sendUserMsg,
-							A3(
-								author$project$ModelB2$newMessage,
-								'select' + elm$core$String$fromInt(i),
-								'selected',
-								author$project$ModelB2$Success),
-							console),
-						inp: A2(
-							author$project$ModelB2$selectI,
-							i,
-							author$project$InputInterface$enableCheckRedex(inp)),
-						mode: author$project$ModelB2$LoHi,
-						store: A2(author$project$ModelB2$selectHi, store, i)
-					});
-			case 'Deselect':
-				var i = msg.a;
-				return _Utils_update(
-					m,
-					{
-						console: A2(
-							author$project$ModelB2$sendUserMsg,
-							A3(author$project$ModelB2$newMessage, 'deselect', 'deselected', author$project$ModelB2$Success),
-							console),
-						inp: A2(author$project$ModelB2$deselectI, i, inp),
-						mode: author$project$ModelB2$Start,
-						store: author$project$ModelB2$deselectFromLo(store)
-					});
-			case 'CheckSorted':
-				return author$project$ModelB2$actionCheckSorted(m);
-			default:
-				return m;
-		}
-	});
 var author$project$InputInterface$disableCheckRedex = function (inp) {
 	return _Utils_update(
 		inp,
@@ -4985,6 +4938,7 @@ var elm$core$List$head = function (list) {
 		return elm$core$Maybe$Nothing;
 	}
 };
+var elm$core$String$fromInt = _String_fromNumber;
 var author$project$Utils$listRef = F2(
 	function (ls, i) {
 		if (_Utils_cmp(
@@ -5069,6 +5023,54 @@ var author$project$ModelB2$updateLoHi = F2(
 							m.console),
 						inp: A2(author$project$ModelB2$updateInpAfterRedexCheck, m.inp, isredex),
 						mode: isredex ? author$project$ModelB2$Swap : author$project$ModelB2$LoHi
+					});
+			case 'CheckSorted':
+				return author$project$ModelB2$actionCheckSorted(m);
+			default:
+				return m;
+		}
+	});
+var author$project$ModelB2$updateLo = F2(
+	function (msg, m) {
+		var _n0 = m;
+		var mode = _n0.mode;
+		var store = _n0.store;
+		var inp = _n0.inp;
+		var console = _n0.console;
+		switch (msg.$) {
+			case 'Select':
+				var i = msg.a;
+				var m_ = _Utils_update(
+					m,
+					{
+						console: A2(
+							author$project$ModelB2$sendUserMsg,
+							A3(
+								author$project$ModelB2$newMessage,
+								'select' + elm$core$String$fromInt(i),
+								'selected',
+								author$project$ModelB2$Success),
+							console),
+						inp: A2(
+							author$project$ModelB2$selectI,
+							i,
+							author$project$InputInterface$enableCheckRedex(inp)),
+						mode: author$project$ModelB2$LoHi,
+						store: A2(author$project$ModelB2$selectHi, store, i)
+					});
+				return A2(author$project$ModelB2$updateLoHi, author$project$ModelB2$CheckRedex, m_);
+			case 'Deselect':
+				var i = msg.a;
+				return _Utils_update(
+					m,
+					{
+						console: A2(
+							author$project$ModelB2$sendUserMsg,
+							A3(author$project$ModelB2$newMessage, 'deselect', 'deselected', author$project$ModelB2$Success),
+							console),
+						inp: A2(author$project$ModelB2$deselectI, i, inp),
+						mode: author$project$ModelB2$Start,
+						store: author$project$ModelB2$deselectFromLo(store)
 					});
 			case 'CheckSorted':
 				return author$project$ModelB2$actionCheckSorted(m);
@@ -5292,8 +5294,8 @@ var author$project$ModelB2$updateSwap = F2(
 				return _Debug_todo(
 					'ModelB2',
 					{
-						start: {line: 350, column: 14},
-						end: {line: 350, column: 24}
+						start: {line: 352, column: 14},
+						end: {line: 352, column: 24}
 					})('todo');
 		}
 	});
@@ -5797,8 +5799,6 @@ var author$project$ModelB2$viewArray = function (model) {
 			}),
 		aszip);
 };
-var author$project$ModelB2$CheckRedex = {$: 'CheckRedex'};
-var author$project$ModelB2$CheckSorted = {$: 'CheckSorted'};
 var author$project$ModelB2$SwapMsg = {$: 'SwapMsg'};
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
@@ -5815,65 +5815,11 @@ var author$project$ModelB2$viewButtons = function (model) {
 	var _n0 = model.mode;
 	switch (_n0.$) {
 		case 'Start':
-			return _List_fromArray(
-				[
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB2$CheckSorted)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('sorted?')
-						]))
-				]);
+			return _List_Nil;
 		case 'Lo':
-			return _List_fromArray(
-				[
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB2$CheckSorted)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('sorted?')
-						]))
-				]);
+			return _List_Nil;
 		case 'LoHi':
-			return _List_fromArray(
-				[
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB2$CheckRedex)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('redex?')
-						])),
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB2$CheckSorted)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('sorted?')
-						]))
-				]);
+			return _List_Nil;
 		default:
 			return _List_fromArray(
 				[
@@ -5888,18 +5834,6 @@ var author$project$ModelB2$viewButtons = function (model) {
 					_List_fromArray(
 						[
 							elm$html$Html$text('swap')
-						])),
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('btn'),
-							elm$html$Html$Attributes$class('btn-small'),
-							elm$html$Html$Events$onClick(author$project$ModelB2$CheckSorted)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('sorted?')
 						]))
 				]);
 	}

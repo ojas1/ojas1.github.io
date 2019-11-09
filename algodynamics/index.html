@@ -23,7 +23,25 @@
               background: #90A4AE;
           }
           a {
-              color: #ffffff;
+              background :rgba(20, 98, 9, 0.48);
+              height: 100%;
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 2rem;
+              color: #fff;
+          }
+
+          #gridw {
+              background-image: url('grid-walk.png');
+              background-repeat: repeat;
+              background-color: #37474F;
+          }
+          #bs {
+              background-image: url('bs.png');
+              background-repeat: repeat;
+              background-color: #37474F;              
           }
         </style>
     </head>
@@ -34,10 +52,10 @@
                  font-family: 'Quicksand', sans-serif;" >
         Algodynamics: Working Deomonstrations</h1>
       <div class="list-of-demos">
-        <div class="demo-ref">
+        <div class="demo-ref" id="gridw">
           <a href="gridwalk/gridwalk.html" target="_blank">GridWalk</a>
         </div>
-        <div class="demo-ref">
+        <div class="demo-ref" id="bs">
           <a href="bubblesort/index_b1.html" target="_blank">Bubble Sort</a>
         </div>        
       </div>
