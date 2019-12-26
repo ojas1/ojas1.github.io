@@ -4445,7 +4445,7 @@ var author$project$ModelB4$init = {
 	mode: author$project$ModelB4$Before,
 	store: author$project$T3store$fromList(
 		_List_fromArray(
-			[10, 4, 9, 30, 12]))
+			[30, 4, 10, 9, 12, 2]))
 };
 var author$project$ModelB4$During = {$: 'During'};
 var elm$core$Basics$lt = _Utils_lt;
