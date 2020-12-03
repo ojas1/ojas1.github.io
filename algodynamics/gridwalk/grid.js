@@ -6,6 +6,7 @@ const C = (x, y) => {
     throw new TypeError("x and y must be integers");
   }
 };
+
 const ValidC = (x, y, m) => {
   const c = C(x,y);
   const in_range_x = (x) => { if (x >= 0 && x < m.grid_size.nx) return true; else return false; };
@@ -18,6 +19,7 @@ const ValidC = (x, y, m) => {
     throw new RangeError("invalid grid location: " + x + ", " + y);
   }
 };
+
 const direction = {
   UP: {name: "U", vector: [0,1]},
   DOWN: {name: "D", vector: [0,-1]},
@@ -44,19 +46,22 @@ const move = (m, d) => {
     m.agent_loc = ValidC(m.agent_loc.x + d.vector[0], m.agent_loc.y + d.vector[1], m);
   }
   catch (e) {
-    console.log(e);
-    return m;
+      return m;
   }
   m.agent_path = m.agent_path.concat(d.name);
   draw(m);
   show_distance(m.agent_loc, m.target_loc);
   return m;
 };
+
 const model = {
-  grid_size: { nx: 5, ny: 5 },
-  agent_loc:  C(0, 0),
-  agent_path: [],
-  target_loc: C(4, 4)
+    grid_size: { nx: 5, ny: 5 },
+    agent_loc:  C(0, 0),
+    agent_path: [],
+    target_loc: C(4, 4),
+    controls: {
+	directions: ["U", "D", "L", "R"]
+    }
 }
 
 const set_grid_size = (m, gs) => {
@@ -90,29 +95,38 @@ const grp = () => {
   return g_;
 };
 
-const drawControls = () => {
+const drawControls = (model) => {
+
+    const x_dist = (model.target_loc.x - model.agent_loc.x);
+    const y_dist = (model.target_loc.y - model.agent_loc.y);
+    //console.log(manhattan_dist == 0);
+
   // draw an arrow
   const t = document.getElementById("view");
   const cgrp = grp();
 //  cgrp.classList.add("clickable");
-  const upbtn = path("M 120 50 h 5 l -2.5 -2.5 l -2.5 2.5", "#109688", 0.1, 0, "#90A4AE", 1);
+  //const upbtn = path("M 120 50 h 5 l -2.5 -2.5 l -2.5 2.5", "#109688", 0.1, 0, "#90A4AE", 1);
   //upbtn.classList.add("clickable");
   //upbtn.onclick = () => move(model, direction.DOWN);
-  const leftbtn = path("M 118 52 v 5 l -2.5 -2.5 l 2.5 -2.5", "#109688", 0.1, 0, "#90A4AE", 1);
+  //const leftbtn = path("M 118 52 v 5 l -2.5 -2.5 l 2.5 -2.5", "#109688", 0.1, 0, "#90A4AE", 1);
   //leftbtn.classList.add("clickable");
   //leftbtn.onclick = () => move(model, direction.LEFT);
-  const rightbtn = path("M 127 52 v 5 l 2.5 -2.5 l -2.5 -2.5", "#009688", 0.1, 0.2, "#9575CD", 1);
-  rightbtn.classList.add("clickable");
-  rightbtn.onclick = () => move(model, direction.RIGHT);
-  const downbtn = path("M 120 59 h 5 l -2.5 2.5 l -2.5 -2.5", "#009688", 0.1, 0.2, "#9575CD", 1);
-  downbtn.classList.add("clickable");
-  downbtn.onclick = () => move(model, direction.UP);
-
-  cgrp.appendChild(upbtn);
-  cgrp.appendChild(leftbtn);
-  cgrp.appendChild(rightbtn);
-  cgrp.appendChild(downbtn);
-  t.appendChild(cgrp);
+    const rightbtn = path("M 127 52 v 5 l 2.5 -2.5 l -2.5 -2.5", "#009688", 0.1, 0.2, "#9575CD", 1);
+    const downbtn = path("M 120 59 h 5 l -2.5 2.5 l -2.5 -2.5", "#009688", 0.1, 0.2, "#9575CD", 1);
+    if (x_dist !== 0) {
+	rightbtn.classList.add("clickable");
+	rightbtn.onclick = () => move(model, direction.RIGHT);
+    }
+    if (y_dist !== 0) {
+	downbtn.classList.add("clickable");
+	downbtn.onclick = () => move(model, direction.UP);
+    }
+    
+  //cgrp.appendChild(upbtn);
+  //cgrp.appendChild(leftbtn);
+    cgrp.appendChild(rightbtn);
+    cgrp.appendChild(downbtn);
+    t.appendChild(cgrp);
 };
 
 const rect = (x, y, width, height, color) => {
@@ -138,10 +152,10 @@ const circle = (x,y,r, color) => {
 const path = (d, sc, sw, so, fc, fo) => {
   const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
   p.setAttribute("d", d);
-  p.setAttribute("stroke", sc || "#29B6F6");
+  p.setAttribute("stroke", sc || "#111111");
   p.setAttribute("stroke-width", sw || 2);
   p.setAttribute("stroke-opacity", so || 0.7);
-  p.setAttribute("fill", fc || "#29B6F6")
+  p.setAttribute("fill", fc || "#111111")
   p.setAttribute("fill-opacity", fo || 0);
   return p;
 };
@@ -317,7 +331,7 @@ const to_grid_coords = (model_coords, config) => {
 const draw = (model) => {
   const target = document.getElementById("view");
   const config = {
-    nx: model.grid_size.nx, 
+    nx: model.grid_size.nx,
     ny: model.grid_size.ny,
     x: 20,
     y: 20,
@@ -329,16 +343,13 @@ const draw = (model) => {
   draw_grid_lines(target, config);
   draw_grid_vertices(target, config);
   draw_agent_dest(target, config, model.target_loc);
-  draw_agent(target, config, model.agent_path, model.agent_loc);
+    draw_agent(target, config, model.agent_path, model.agent_loc);
+    drawControls(model);
 };
 
 window.onload = () => {
-  controls = {
-    directions: ["U", "D", "L", "R"]
-  };
   draw(model);
   show_distance(model.agent_loc, model.target_loc);
-  drawControls(controls);
   //move(model, direction.UP);
   
 };
