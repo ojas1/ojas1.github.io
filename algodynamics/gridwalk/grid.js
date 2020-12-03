@@ -111,8 +111,8 @@ const drawControls = (model) => {
   //const leftbtn = path("M 118 52 v 5 l -2.5 -2.5 l 2.5 -2.5", "#109688", 0.1, 0, "#90A4AE", 1);
   //leftbtn.classList.add("clickable");
   //leftbtn.onclick = () => move(model, direction.LEFT);
-    const rightbtn = path("M 127 52 v 5 l 2.5 -2.5 l -2.5 -2.5", "#009688", 0.1, 0.2, "#9575CD", 1);
-    const downbtn = path("M 120 59 h 5 l -2.5 2.5 l -2.5 -2.5", "#009688", 0.1, 0.2, "#9575CD", 1);
+    const rightbtn = path("M 127 52 v 5 l 2.5 -2.5 l -2.5 -2.5", "#009688", 0.1, 0.2, "#B0BEC5", 1);
+    const downbtn = path("M 120 59 h 5 l -2.5 2.5 l -2.5 -2.5", "#009688", 0.1, 0.2, "#B0BEC5", 1);
     if (x_dist !== 0) {
 	rightbtn.classList.add("clickable");
 	rightbtn.onclick = () => move(model, direction.RIGHT);
